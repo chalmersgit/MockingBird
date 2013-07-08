@@ -13,7 +13,7 @@ ObjReader::ObjReader(void) {
 	m_pUVArray = NULL;
 	m_pTriangles = NULL;
 
-	mode = G308_SHADE_POLYGON;
+	mode = SHADE_POLYGON;
 
 	m_nNumPoint = m_nNumUV = m_nNumPolygon = 0;
 	m_glGeomListPoly = m_glGeomListWire = 0;
@@ -47,8 +47,8 @@ int ObjReader::ReadOBJ(const char *filename) {
 	float x, y, z;
 	float u, v;
 
-	G308_Normal* lNormalArray = NULL; // local Array
-	G308_UVcoord* lUVArray = NULL; // local Array
+	Normal* lNormalArray = NULL; // local Array
+	UVcoord* lUVArray = NULL; // local Array
 
 	numVert = numNorm = numUV = numFace = 0;
 
@@ -84,23 +84,23 @@ int ObjReader::ReadOBJ(const char *filename) {
 	printf("Number of Point %d, UV %d, Normal %d, Face %d\n", numVert, numUV, numNorm, numFace);
 	if (m_pVertexArray != NULL)
 		delete[] m_pVertexArray;
-	m_pVertexArray = new G308_Point[m_nNumPoint];
+	m_pVertexArray = new Point[m_nNumPoint];
 
 	if (m_pNormalArray != NULL)
 		delete[] m_pNormalArray;
-	m_pNormalArray = new G308_Normal[m_nNumPoint];
+	m_pNormalArray = new Normal[m_nNumPoint];
 
-	lNormalArray = new G308_Normal[numNorm]; 
+	lNormalArray = new Normal[numNorm]; 
 
 	if (m_pUVArray != NULL)
 		delete[] m_pUVArray;
-	m_pUVArray = new G308_UVcoord[m_nNumPoint];
+	m_pUVArray = new UVcoord[m_nNumPoint];
 
-	lUVArray = new G308_UVcoord[m_nNumUV];
+	lUVArray = new UVcoord[m_nNumUV];
 
 	if (m_pTriangles != NULL)
 		delete[] m_pTriangles;
-	m_pTriangles = new G308_Triangle[m_nNumPolygon];
+	m_pTriangles = new Triangle[m_nNumPolygon];
 
 	//-----------------------------------------------------------
 	//	Read obj file
@@ -323,16 +323,16 @@ void ObjReader::CreateGLWireGeometry() {
 
 }
 void ObjReader::toggleMode() {
-	if (mode == G308_SHADE_POLYGON) {
-		mode = G308_SHADE_WIREFRAME;
+	if (mode == SHADE_POLYGON) {
+		mode = SHADE_WIREFRAME;
 	} else {
-		mode = G308_SHADE_POLYGON;
+		mode = SHADE_POLYGON;
 	}
 }
 
 void ObjReader::RenderGeometry() {
 
-	if (mode == G308_SHADE_POLYGON) {
+	if (mode == SHADE_POLYGON) {
 		//-------------------------------------------------------------
 		// [Assignment1] : Uncomment the next line
 		glCallList(m_glGeomListPoly);
@@ -346,7 +346,7 @@ void ObjReader::RenderGeometry() {
 		//makes teapot shaded polygon
 		//glShadeModel(GL_SMOOTH);
 		//glutSolidTeapot(5.0);
-	} else if (mode == G308_SHADE_WIREFRAME) {
+	} else if (mode == SHADE_WIREFRAME) {
 		//-------------------------------------------------------------
 		// [Assignment1] : Uncomment the next line
 		glCallList(m_glGeomListWire);

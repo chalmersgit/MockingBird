@@ -1,0 +1,50 @@
+﻿Build started 9/07/2013 11:14:58 a.m..
+     1>Project "C:\Users\Chalmers\Documents\Visual Studio 2010\Projects\GameEngine_NoGLUT\GameEngine.vcxproj" on node 2 (build target(s)).
+     1>InitializeBuildStatus:
+         Touching "Release\GameEngine.unsuccessfulbuild".
+       ClCompile:
+         c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /I"C:\Users\Chalmers\Documents\Visual Studio 2010\Projects\GameEngine_NoGLUT\include" /IC:\Dev\opengl\freeglut\include /I"C:\Dev\opengl\glew-1.9.0\include" /Zi /nologo /W3 /WX- /O2 /Oi /Oy- /GL /D _MBCS /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Release\\" /Fd"Release\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt src\main.cpp src\ObjReader.cpp
+         main.cpp
+         ObjReader.cpp
+     1>src\ObjReader.cpp(55): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\include\stdio.h(234) : see declaration of 'fopen'
+     1>src\ObjReader.cpp(63): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\include\stdio.h(325) : see declaration of 'sscanf'
+     1>src\ObjReader.cpp(112): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\include\stdio.h(325) : see declaration of 'sscanf'
+     1>src\ObjReader.cpp(117): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\include\stdio.h(325) : see declaration of 'sscanf'
+     1>src\ObjReader.cpp(123): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\include\stdio.h(325) : see declaration of 'sscanf'
+     1>src\ObjReader.cpp(130): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\include\stdio.h(325) : see declaration of 'sscanf'
+     1>src\ObjReader.cpp(139): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\include\stdio.h(325) : see declaration of 'sscanf'
+     1>src\ObjReader.cpp(142): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\include\stdio.h(325) : see declaration of 'sscanf'
+     1>src\ObjReader.cpp(143): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\include\stdio.h(325) : see declaration of 'sscanf'
+     1>src\ObjReader.cpp(147): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\include\stdio.h(325) : see declaration of 'sscanf'
+     1>src\ObjReader.cpp(251): warning C4305: 'argument' : truncation from 'double' to 'GLfloat'
+     1>src\ObjReader.cpp(251): warning C4305: 'argument' : truncation from 'double' to 'GLfloat'
+     1>src\ObjReader.cpp(251): warning C4305: 'argument' : truncation from 'double' to 'GLfloat'
+     1>src\ObjReader.cpp(255): warning C4305: 'argument' : truncation from 'double' to 'GLfloat'
+     1>src\ObjReader.cpp(255): warning C4305: 'argument' : truncation from 'double' to 'GLfloat'
+     1>src\ObjReader.cpp(255): warning C4305: 'argument' : truncation from 'double' to 'GLfloat'
+       Link:
+         c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Chalmers\Documents\Visual Studio 2010\Projects\GameEngine_NoGLUT\Release\GameEngine.exe" /NOLOGO /LIBPATH:"C:\Dev\opengl\glew-1.9.0\lib" /LIBPATH:C:\Dev\opengl\freeglut\lib glew32.lib freeglut.lib opengl32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /ManifestFile:"Release\GameEngine.exe.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"C:\Users\Chalmers\Documents\Visual Studio 2010\Projects\GameEngine_NoGLUT\Release\GameEngine.pdb" /OPT:REF /OPT:ICF /LTCG /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Chalmers\Documents\Visual Studio 2010\Projects\GameEngine_NoGLUT\Release\GameEngine.lib" /MACHINE:X86 Release\main.obj
+         Release\ObjReader.obj
+         Generating code
+         Finished generating code
+         GameEngine.vcxproj -> C:\Users\Chalmers\Documents\Visual Studio 2010\Projects\GameEngine_NoGLUT\Release\GameEngine.exe
+       Manifest:
+         C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\bin\mt.exe /nologo /verbose /outputresource:"C:\Users\Chalmers\Documents\Visual Studio 2010\Projects\GameEngine_NoGLUT\Release\GameEngine.exe;#1" /manifest Release\GameEngine.exe.intermediate.manifest
+       FinalizeBuildStatus:
+         Deleting file "Release\GameEngine.unsuccessfulbuild".
+         Touching "Release\GameEngine.lastbuildstate".
+     1>Done Building Project "C:\Users\Chalmers\Documents\Visual Studio 2010\Projects\GameEngine_NoGLUT\GameEngine.vcxproj" (build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:01.00
