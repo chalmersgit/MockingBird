@@ -1,22 +1,24 @@
-CC = g++ 
-CFLAGS = 
+BIN = ./bin/
+SRC = ./src/
 
-IPATH = -I/usr/pkg/include/GL -I./include/SDL
-LPATH = -L./dev/SDL -L/usr/pkg/lib
-LDPATH = -Wl,-R./dev/SDL -lSDL
+CC = g++
+CFLAGS =
+
+IPATH = -I/usr/pkg/include/GL -I./dev/SDL/include -I./include
+LPATH = -L./dev/SDL -lSDL
+LDPATH = -Wl,-R./dev/SDL 
 
 RM = rm
 
 
+all: $(BIN)MockingBird
 
-all: MockingBird
-
-MockingBird: MockingBird.o ObjReader.o
+$(BIN)MockingBird: $(BIN)MockingBird.o $(BIN)ObjReader.o $(BIN)BananaClient.o
 	$(CC) -o $@ $^ -lm -lGL -lglut -lGLU $(LPATH) $(LDPATH)
 	
-.cpp.o: 
+$(BIN)%.o: $(SRC)%.cpp
 	$(CC) $(CFLAGS) -c -o $@ $^ $(IPATH)
 
 clean:
-	$(RM) -f *.o *.gch MockingBird
+	$(RM) -f $(BIN)*.o $(BIN)*.gch $(BIN)MockingBird
 
