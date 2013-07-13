@@ -153,7 +153,7 @@ void BananaClient::loop() {
 
 	if (!fork()) {
 		close(sockfd);
-		if (send(new_fd, "Hello Andrew, from Richard!", 40, 0) == -1) {
+		if (send(new_fd, "Server says hi!\n", 40, 0) == -1) {
 			perror("send");
 		}
 		close(new_fd);

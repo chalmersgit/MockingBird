@@ -25,20 +25,30 @@
 // Standard
 #include <iostream>
 #include <string>
+#include <math.h>
 
 // User defined
 #include "BananaClient.h"
 #include "ObjReader.h"
 #include "define.h"
 
-void SetCamera(){
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-	gluPerspective(FOVY, (double) WIN_WIDTH / (double) WIN_HEIGHT, ZNEAR_3D, ZFAR_3D);
-	glMatrixMode(GL_MODELVIEW);
-	glLoadIdentity();
-	gluLookAt(0.17, 0.8, 6.0, 0.17, 0.8, 0.0, 0.0, 1.0, 0.0);
-}
+// TMP globals for arcball
+struct Keytracker {
+	bool LALT = false;
+	bool RALT = false;
+	bool MOUSEDOWN = false;
+	bool MOUSEUP = false;
+	Point MOUSE_POS;
+	Point MOUSE_VEL;
+};
+Keytracker keytracker;
+Point arcballCenter{ WIN_WIDTH/2, WIN_HEIGHT/2, 0.0 };
+Point eye{ 0.17, 0.8, 6.0 };
+Point center{ 0.17, 0.8, 0.0 };
+Point up{ 0.0, 1.0, 0.0 };
+float arcballRadius = 500.0;
+void calculateArcball();
+void resetCamera();
 
 void SetLight(){
 	float direction[]		= {0.0f, 0.0f, 1.0f, 0.0f};
@@ -52,6 +62,78 @@ void SetLight(){
 	glEnable(GL_LIGHT0);
 }
 
+void SetCamera(){
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	gluPerspective(FOVY, (double) WIN_WIDTH / (double) WIN_HEIGHT, ZNEAR_3D, ZFAR_3D);
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+	gluLookAt(eye.x, eye.y, eye.z, center.x, center.y, center.z, up.x, up.y, up.z);
+}
+
+void resetCamera(){
+	if((keytracker.LALT || keytracker.RALT) && keytracker.MOUSEDOWN){
+		calculateArcball();
+	}else{
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+	}
+	gluLookAt(eye.x, eye.y, eye.z, center.x, center.y, center.z, up.x, up.y, up.z);
+}
+
+void calculateArcball(){
+	printf("Calculating arcball\n");
+
+	Point centerToMousePos{
+		(keytracker.MOUSE_POS.x - arcballCenter.x)/arcballRadius,
+		(keytracker.MOUSE_POS.y - arcballCenter.y)/arcballRadius,
+		0
+	};
+	float r1 = pow(centerToMousePos.x, 2) + pow(centerToMousePos.y, 2);
+	if(r1 > 1.0){
+		float s = 1.0/sqrt(r1);
+		centerToMousePos.x = s*centerToMousePos.x;
+		centerToMousePos.y = s*centerToMousePos.y;
+		centerToMousePos.z = 0.0;
+	}else{
+		centerToMousePos.z = sqrt(1.0 - r1);
+	}
+
+	Point centerToMousePrevPos{
+		((keytracker.MOUSE_POS.x - keytracker.MOUSE_VEL.x) - arcballCenter.x)/arcballRadius,
+		((keytracker.MOUSE_POS.y - keytracker.MOUSE_VEL.y) - arcballCenter.y)/arcballRadius,
+		0
+	};
+	float r2 = pow(centerToMousePrevPos.x, 2) + pow(centerToMousePrevPos.y, 2);
+	if(r2 > 1.0){
+		float s = 1.0/sqrt(r2);
+		centerToMousePrevPos.x = s*centerToMousePrevPos.x;
+		centerToMousePrevPos.y = s*centerToMousePrevPos.y;
+		centerToMousePrevPos.z = 0.0;
+	}else{
+		centerToMousePrevPos.z = sqrt(1.0 - r2);
+	}
+
+	normalise(centerToMousePos);
+	normalise(centerToMousePrevPos);
+
+	//Point q = cross(centerToMousePos, centerToMousePrevPos);
+	//float w = dot(centerToMousePos, centerToMousePrevPos);
+
+	Point rotationAxis = cross(centerToMousePos, centerToMousePrevPos);
+
+	float dotValue = dot(centerToMousePos, centerToMousePrevPos);
+	float angle = acos(dotValue) * (180/M_PI);
+
+	/*
+	log(centerToMousePos);
+	log(centerToMousePrevPos);
+	log(rotationAxis);
+	printf("%f, %f\n\n", dotValue, angle);
+	 */
+
+	//glRotatef(angle, rotationAxis.x, rotationAxis.y, rotationAxis.z);
+}
 
 int main(int agrc, char* args[] ){
 	SDL_Init(SDL_INIT_EVERYTHING);
@@ -91,36 +173,79 @@ int main(int agrc, char* args[] ){
 	while ( isRunning ){
 		// Events
 		while( SDL_PollEvent(&event) ){
-			if( event.type == SDL_QUIT ){
+			switch( event.type ){
+			case SDL_KEYDOWN:
+				switch(event.key.keysym.sym){
+				case SDLK_LALT:
+					keytracker.LALT = true;
+					break;
+				case SDLK_RALT:
+					keytracker.RALT = true;
+					break;
+				case SDLK_w:
+					glClearColor(1,1,1,1);
+					break;
+				case SDLK_r:
+					glClearColor(1,0,0,1);
+					break;
+				case SDLK_g:
+					glClearColor(0,1,0,1);
+					break;
+				case SDLK_b:
+					glClearColor(0,0,1,1);
+					break;
+				default:
+					break;
+				}
+				break;
+
+			case SDL_KEYUP:
+				switch( event.key.keysym.sym ){
+				case SDLK_ESCAPE:
+					isRunning = false;
+					break;
+				case SDLK_LALT:
+					keytracker.LALT = false;
+					break;
+				case SDLK_RALT:
+					keytracker.RALT = false;
+					break;
+				}
+				break;
+			case SDL_MOUSEMOTION:
+				//printf("Mouse moved by %d,%d to (%d,%d)\n",
+				//		event.motion.xrel, event.motion.yrel,
+				//		event.motion.x, event.motion.y);
+
+				keytracker.MOUSE_POS.x = event.motion.x;
+				keytracker.MOUSE_POS.y = event.motion.y;
+				keytracker.MOUSE_VEL.x = event.motion.xrel;
+				keytracker.MOUSE_VEL.y = event.motion.yrel;
+
+				break;
+			case SDL_MOUSEBUTTONDOWN:
+				keytracker.MOUSEDOWN = true;
+				//printf("Mouse button down %d pressed at (%d,%d)\n",
+				//		event.button.button, event.button.x, event.button.y);
+	                break;
+			case SDL_MOUSEBUTTONUP:
+				keytracker.MOUSEDOWN = false;
+				//printf("Mouse button up %d pressed at (%d,%d)\n",
+				//		event.button.button, event.button.x, event.button.y);
+	                break;
+			case SDL_QUIT:
 				isRunning = false;
-			}
-			if( event.type = SDL_KEYUP && event.key.keysym.sym == SDLK_ESCAPE ){
-				isRunning = false;
-			}
-
-			if( event.type = SDL_KEYUP & event.key.keysym.sym == SDLK_w ){
-				glClearColor(1,1,1,1);
-			}
-			if( event.type = SDL_KEYUP & event.key.keysym.sym == SDLK_r ){
-				glClearColor(1,0,0,1);
-			}
-			if( event.type = SDL_KEYUP & event.key.keysym.sym == SDLK_g ){
-				glClearColor(0,1,0,1);
-			}
-			if( event.type = SDL_KEYUP & event.key.keysym.sym == SDLK_b ){
-				glClearColor(0,0,1,1);
-			}
-
-			if( event.type = SDL_KEYUP & event.key.keysym.sym == SDLK_t ){
-				obj->toggleMode();
-			}
-
+				break;
+			default:
+				break;
+		    }
 		}
 
 		//SERVER
-		bc->loop();
+		//bc->loop();
 
 		//LOGIC
+		resetCamera();
 
 		//RENDERING
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
